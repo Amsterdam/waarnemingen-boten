@@ -1,0 +1,25 @@
+version: '3.3'
+services:
+  database:
+    image: amsterdam/postgres11
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: boten
+      POSTGRES_USER: boten 
+      POSTGRES_PASSWORD: insecure
+    volumes:
+      - ~/.ssh/datapunt.key:/root/.ssh/datapunt.key
+      - ./backups:/tmp/backups
+
+        #  api:
+        #    build: ./api
+        #    ports:
+        #      - "8001:8001"
+        #    links:
+        #      - database
+        #    command: >
+        #          bash -c "
+        #            python ./manage.py migrate &&
+        #            python ./manage.py collectstatic --noinput &&
+        #            python ./manage.py runserver 0.0.0.0:8001"
