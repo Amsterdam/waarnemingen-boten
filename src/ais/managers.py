@@ -2,6 +2,6 @@ from snapshot.managers import BaseSnapshotManager
 from ais import models
 
 
-class BoatTrackingSnapshotManager(BaseSnapshotManager):
+class WaternetSnapshotManager(BaseSnapshotManager):
     def get_import_model(self):
-        return models.BoatTracking
+        return models.Waternet

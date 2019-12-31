@@ -1,7 +1,7 @@
 from django.conf import settings
 
 from snapshot.base_api_scraper import BaseAPIScraper
-from ais.models import BoatTrackingSnapshot
+from ais.models import WaternetSnapshot
 
 PARAMS = {'left': 4, 'top': 55, 'right': 8, 'bottom': 50, 'age': 10}
 
@@ -14,9 +14,9 @@ class InvalidCredentials(Exception):
     """Could not authenticate with provided credentials"""
 
 
-class BoatTrackingScraper(BaseAPIScraper):
+class WaternetScraper(BaseAPIScraper):
     url = 'https://waternet.globalguidesystems.com/api/v0/object'
-    model = BoatTrackingSnapshot
+    model = WaternetSnapshot
 
     def __init__(self):
         super().__init__()

@@ -1,7 +1,7 @@
 from django.contrib.gis import forms, geos
 
 from ais import constants
-from ais.models import BoatTracking
+from ais.models import Waternet
 from constants import WGS84_SRID
 
 
@@ -14,11 +14,11 @@ class CustomPointField(forms.PointField):
         )
 
 
-class BoatTrackingImporterForm(forms.ModelForm):
+class WaternetImporterForm(forms.ModelForm):
     geo_location = CustomPointField()
     lastupdate = forms.DateTimeField(input_formats=['%Y-%m-%dT%H:%M:%S.%f%z'])
     lastmoved = forms.DateTimeField(input_formats=['%Y-%m-%dT%H:%M:%S.%f%z'], required=False)
 
     class Meta:
-        model = BoatTracking
-        fields = list(constants.BOAT_TRACKING_RAW_TO_MODEL_MAPPING.values())
+        model = Waternet
+        fields = list(constants.WATERNET_RAW_TO_MODEL_MAPPING.values())

@@ -1,21 +1,18 @@
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
 
-from ais.managers import BoatTrackingSnapshotManager
+from ais.managers import WaternetSnapshotManager
 from ais.constants import WGS84_SRID
 
 
-class BoatTrackingSnapshot(models.Model):
+class WaternetSnapshot(models.Model):
     scraped_at = models.DateTimeField(auto_now_add=True, editable=False)
     data = JSONField()
 
-    objects = BoatTrackingSnapshotManager()
-
-    class Meta:
-        db_table = 'boat_tracking_boattrackingraw'
+    objects = WaternetSnapshotManager()
 
 
-class BoatTracking(models.Model):
+class Waternet(models.Model):
     mmsi = models.CharField(max_length=255)
     name = models.CharField(max_length=255, null=True, blank=True)
     type = models.IntegerField(null=True, blank=True)

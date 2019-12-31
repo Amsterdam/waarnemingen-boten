@@ -1,4 +1,4 @@
-BOAT_TRACKING_RAW_TO_MODEL_MAPPING = {
+WATERNET_RAW_TO_MODEL_MAPPING = {
     'Id': 'mmsi',
     'Position': 'geo_location',
     'Name': 'name',
