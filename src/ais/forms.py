@@ -2,7 +2,7 @@ from django.contrib.gis import forms, geos
 
 from ais import constants
 from ais.models import Waternet
-from constants import WGS84_SRID
+from ais.constants import WGS84_SRID
 
 
 class CustomPointField(forms.PointField):

@@ -5,12 +5,20 @@ verify_ssl = true
 
 [dev-packages]
 ipython = "*"
+pylint = "*"
 
 [packages]
 django = "*"
 psycopg2-binary = "*"
-dotenv = "*"
 python-dotenv = "*"
+pytest = "*"
+tox = "*"
+isort = "*"
+flake8 = "*"
+pytest-django = "*"
+pytest-flake8 = "*"
+pytest-isort = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.7"

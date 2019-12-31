@@ -21,7 +21,7 @@ __pycache__
 /.cache
 
 # tox
-.tox
+*.tox
 
 # coverage
 htmlcov
@@ -50,3 +50,4 @@ htmlcov
 # Environment variables
 .env
 *.env
+
