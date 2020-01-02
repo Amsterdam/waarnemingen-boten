@@ -2,7 +2,7 @@ from django.core.management import call_command
 from django.test import TestCase
 from django.utils import timezone
 
-from apps.waternet.models import Waternet, WaternetSnapshot
+from ais.models import Waternet, WaternetSnapshot
 
 
 class TestWaternetImporter(TestCase):
