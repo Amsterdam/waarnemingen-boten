@@ -1,6 +1,7 @@
 import logging
 
-from snapshot.base_importer import BaseImportFactory, BaseSnapshotImporter
+from snapshot.importer import BaseImportFactory, BaseSnapshotImporter
+
 from ais import constants
 from ais.forms import WaternetImporterForm
 from ais.models import Waternet

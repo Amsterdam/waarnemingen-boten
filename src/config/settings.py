@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+
 from dotenv import load_dotenv
 
 # Load .env file to retrieve all environment variables

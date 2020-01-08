@@ -12,5 +12,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         log.info("Starting import")
         for snapshot in WaternetSnapshot.objects.limit_offset_iterator(10):
-            WaternetSnapshotImporter(snapshot).start_import()
+            WaternetSnapshotImporter(snapshot).start()
         log.info("import Done")

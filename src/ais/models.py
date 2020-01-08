@@ -1,14 +1,11 @@
 from django.contrib.gis.db import models
-from django.contrib.postgres.fields import JSONField
+from snapshot.models import BaseSnapshot
 
-from ais.managers import WaternetSnapshotManager
 from ais.constants import WGS84_SRID
+from ais.managers import WaternetSnapshotManager
 
 
-class WaternetSnapshot(models.Model):
-    scraped_at = models.DateTimeField(auto_now_add=True, editable=False)
-    data = JSONField()
-
+class WaternetSnapshot(BaseSnapshot):
     objects = WaternetSnapshotManager()
 
 

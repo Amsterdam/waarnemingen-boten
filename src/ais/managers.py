@@ -1,4 +1,5 @@
 from snapshot.managers import BaseSnapshotManager
+
 from ais import models
 
 
