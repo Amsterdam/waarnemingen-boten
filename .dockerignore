@@ -1,0 +1,7 @@
+.tox
+.env
+.pytest_cache
+src/.env
+src/.tox
+src/.pytest_cache
+__pycache__

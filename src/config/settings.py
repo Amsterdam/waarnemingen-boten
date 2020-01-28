@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ais',
+    'health',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,7 @@ DATABASES = {
         'NAME': os.getenv('DATABASE_NAME', 'boten'),
         'USER': os.getenv('DATABASE_USER', 'boten'),
         'PASSWORD': os.getenv('DATABASE_PASSWORD', 'insecure'),
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+        'HOST': os.getenv('DATABASE_HOST', 'database'),
         'PORT': os.getenv('DATABASE_PORT', '5432')
     }
 }
