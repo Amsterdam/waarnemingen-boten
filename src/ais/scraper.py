@@ -3,6 +3,7 @@ from snapshot.scraper import BaseAPISnapshotScraper
 
 from ais.models import WaternetSnapshot
 
+# API parameters. left, top, right, bottom is bounding box. age is last seen
 PARAMS = {'left': 4, 'top': 55, 'right': 8, 'bottom': 50, 'age': 10}
 
 
