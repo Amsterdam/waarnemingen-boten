@@ -9,10 +9,8 @@ String ACCEPTANCE_BRANCH = "development"
 String INFRASTRUCTURE = 'thanos'
 String PLAYBOOK = 'deploy-waarnemingen-boten.yml'
 
-String IMAGE_NAME = "repo.data.amsterdam.nl/datapunt/${PROJECT_NAME}:${env.BUILD_NUMBER}"
+String IMAGE_NAME = "datapunt/${PROJECT_NAME}:${env.BUILD_NUMBER}"
 String BRANCH = "${env.BRANCH_NAME}"
-
-image = 'initial value'
 
 def tryStep(String message, Closure block, Closure tearDown = null) {
     try {
@@ -43,11 +41,13 @@ node {
         }
     }
 
-    // Build the Dockerfile in the $CONTAINER_DIR and push it to Nexus
+    // Build the Dockerfile in the $CONTAINER_DIR and push it to registry
     stage("Build develop image") {
         tryStep "build", {
-            image = docker.build("${IMAGE_NAME}","${CONTAINER_DIR}")
-            image.push()
+            docker.withRegistry("${docker_registry_host}",'docker_registry_auth') {
+                def image = docker.build("${IMAGE_NAME}","${CONTAINER_DIR}")
+                image.push()
+            }
         }
     }
 }
@@ -57,7 +57,11 @@ if (BRANCH == "${ACCEPTANCE_BRANCH}") {
     node {
         stage("Deploy to ACC") {
             tryStep "deployment", {
-                image.push("acceptance")
+                docker.withRegistry("${docker_registry_host}",'docker_registry_auth') {
+                    def image = docker.image("${env.DOCKER_IMAGE_NAME}")
+                    image.pull()
+                    image.push("acceptance")
+                }
                 build job: 'Subtask_Openstack_Playbook',
                         parameters: [
                                 [$class: 'StringParameterValue', name: 'INFRASTRUCTURE', value: "${INFRASTRUCTURE}"],
@@ -66,7 +70,7 @@ if (BRANCH == "${ACCEPTANCE_BRANCH}") {
                         ]
             }
         }
-  }
+    }
 }
 
 // On master branch, fetch the container, tag with production and latest and deploy to production
@@ -79,8 +83,12 @@ if (BRANCH == "${PRODUCTION_BRANCH}") {
     node {
         stage("Deploy to PROD") {
             tryStep "deployment", {
-                image.push("production")
-                image.push("latest")
+                docker.withRegistry("${docker_registry_host}",'docker_registry_auth') {
+                    def image = docker.image("${env.DOCKER_IMAGE_NAME}")
+                    image.pull()
+                    image.push("production")
+                    image.push("latest")
+                }
                 build job: 'Subtask_Openstack_Playbook',
                         parameters: [
                                 [$class: 'StringParameterValue', name: 'INFRASTRUCTURE', value: "${INFRASTRUCTURE}"],
