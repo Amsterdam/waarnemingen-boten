@@ -3,7 +3,7 @@
 // Project Settings for Deployment
 String PROJECT_DISPLAY = "Waarnemingen Boten"
 String PROJECT_NAME = "waarnemingen-boten"
-String CONTAINER_DIR = "src/"
+String CONTAINER_DIR = "."
 String PRODUCTION_BRANCH = "master"
 String ACCEPTANCE_BRANCH = "development"
 String INFRASTRUCTURE = 'thanos'
@@ -39,7 +39,7 @@ node {
 
     stage('Test') {
         tryStep "Test", {
-            sh "src/deploy/test/jenkins-script.sh"
+            sh "deploy/test/jenkins-script.sh"
         }
     }
 

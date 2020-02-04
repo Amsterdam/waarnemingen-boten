@@ -4,8 +4,6 @@ services:
     image: amsterdam/postgres11
     ports:
       - "5432:5432"
-    env_file:
-      - src/dotenv-example
     environment:
       POSTGRES_DB: boten
       POSTGRES_USER: boten 
@@ -14,14 +12,23 @@ services:
       - ~/.ssh/datapunt.key:/root/.ssh/datapunt.key
       - ./backups:/tmp/backups
 
-#  api:
-#    build: ./api
-#    ports:
-#      - "8001:8001"
-#    links:
-#      - database
-#    command: >
-#          bash -c "
-#            python ./manage.py migrate &&
-#            python ./manage.py collectstatic --noinput &&
-#            python ./manage.py runserver 0.0.0.0:8001"
+  api:
+    build: .
+    ports:
+      - "8001:8000"
+    links:
+      - database
+    environment:
+      SECRET_KEY: "insecure"
+      DJANGO_DEBUG: "True"
+      UWSGI_CALLABLE: "application"
+      UWSGI_DIE_ON_TERM: "1"
+      UWSGI_HARAKIRI: "15"
+      UWSGI_HTTP: "0.0.0.0:8000"
+      UWSGI_MASTER: "1"
+      UWSGI_MODULE: "wsgi:application"
+      UWSGI_OFFLOAD_THREADS: "1"
+      UWSGI_STATIC_EXPIRES: "/* 3600"
+      UWSGI_STATIC_INDEX: "index.html"
+      UWSGI_STATIC_MAP: "/waarnemingen/boten/static=/static"
+      UWSGI_VACUUM: "1"
