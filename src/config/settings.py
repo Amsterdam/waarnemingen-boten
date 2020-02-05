@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ais',
     'health',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

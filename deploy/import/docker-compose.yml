@@ -1,0 +1,13 @@
+version: '3.0'
+services:
+  api:
+    image: repo.data.amsterdam.nl/datapunt/waarnemingen-boten:${ENVIRONMENT}
+    environment:
+      ADP_USE_SSL_CERT:
+      SECRET_KEY: insecure
+      DATABASE_NAME: boten
+      DATABASE_USER: boten
+      DATABASE_PASSWORD:
+      DATABASE_HOST:
+      WATERNET_USERNAME:
+      WATERNET_PASSWORD:
