@@ -14,6 +14,9 @@ import os
 
 from dotenv import load_dotenv
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 # Load .env file to retrieve all environment variables
 load_dotenv()
 
@@ -129,3 +132,12 @@ STATIC_ROOT = '/static/'
 
 WATERNET_USERNAME = os.getenv('WATERNET_USERNAME')
 WATERNET_PASSWORD = os.getenv('WATERNET_PASSWORD')
+
+SENTRY_DSN = os.getenv('SENTRY_DSN')
+
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        ignore_errors=['ExpiredSignatureError']
+    )

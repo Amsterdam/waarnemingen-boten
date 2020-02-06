@@ -16,3 +16,4 @@ pytest-isort
 pytest-cov
 datapunt-django-snapshot
 uWSGI
+sentry-sdk
