@@ -9,5 +9,7 @@ services:
       DATABASE_USER: boten
       DATABASE_PASSWORD:
       DATABASE_HOST:
+      SENTRY_DSN: 
+      ENVIRONMENT:
       WATERNET_USERNAME:
       WATERNET_PASSWORD:

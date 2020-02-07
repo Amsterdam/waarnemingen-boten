@@ -15,6 +15,10 @@ class InvalidCredentials(Exception):
     """Could not authenticate with provided credentials"""
 
 
+class EmptyResponse(Exception):
+    """Received empty response"""
+
+
 class WaternetScraper(BaseAPISnapshotScraper):
     url = 'https://waternet.globalguidesystems.com/api/v0/object'
     model = WaternetSnapshot
@@ -33,6 +37,16 @@ class WaternetScraper(BaseAPISnapshotScraper):
         if not all(credentials.values()):
             raise MissingEnvVariables
         return credentials
+
+    def parse(self, response):
+        """
+        If response is empty an error is raised to avoid
+        smearing the db.
+        """
+        data = response.json()
+        if not data:
+            raise EmptyResponse()
+        return data
 
     def authenticate(self):
         """Send authentication request and add token to headers"""
