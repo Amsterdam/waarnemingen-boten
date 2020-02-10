@@ -17,3 +17,4 @@ pytest-cov
 datapunt-django-snapshot
 uWSGI
 sentry-sdk
+virtualenv<20.0.0  # breaks tox temporary till a fix is released
