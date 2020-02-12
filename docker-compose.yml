@@ -70,3 +70,39 @@ services:
     depends_on:
       - database
     entrypoint: /deploy/wait-for-it.sh database:5432 --
+
+  import_waternet:
+    build:
+      context: .
+      target: dev
+    ports:
+      - 8000:8000
+    environment:
+      DEBUG: "true"
+      SECRET_KEY: "dev"
+    volumes:
+      - ./src:/src
+      - ./deploy:/deploy
+    depends_on:
+      - database
+    entrypoint: /deploy/wait-for-it.sh database:5432 --
+    command: python manage.py import_waternet
+
+  scrape_waternet:
+    build:
+      context: .
+      target: dev
+    ports:
+      - 8000:8000
+    environment:
+      DEBUG: "true"
+      SECRET_KEY: "dev"
+      WATERNET_USERNAME:
+      WATERNET_PASSWORD:
+    volumes:
+      - ./src:/src
+      - ./deploy:/deploy
+    depends_on:
+      - database
+    entrypoint: /deploy/wait-for-it.sh database:5432 --
+    command: python manage.py scrape_waternet
