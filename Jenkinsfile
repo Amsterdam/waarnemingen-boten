@@ -1,93 +1,97 @@
 #!groovy
+def PROJECT_NAME = "waarnemingen-boten"
+def SLACK_CHANNEL = '#waarnemingen-deployments'
+def PLAYBOOK = 'deploy-waarnemingen-boten.yml'
+def PLAYBOOK_INVENTORY = 'acceptance'
+def SLACK_MESSAGE = [
+    "title_link": BUILD_URL,
+    "fields": [
+        ["title": "Project","value": PROJECT_NAME],
+        ["title":"Branch", "value": BRANCH_NAME, "short":true],
+        ["title":"Build number", "value": BUILD_NUMBER, "short":true]
+    ]
+]
 
-// Project Settings for Deployment
-String PROJECT_DISPLAY = "Waarnemingen Boten"
-String PROJECT_NAME = "waarnemingen-boten"
-String CONTAINER_DIR = "."
-String PRODUCTION_BRANCH = "master"
-String ACCEPTANCE_BRANCH = "development"
-String INFRASTRUCTURE = 'thanos'
-String PLAYBOOK = 'deploy-waarnemingen-boten.yml'
 
-String IMAGE_NAME = "repo.data.amsterdam.nl/datapunt/${PROJECT_NAME}:${env.BUILD_NUMBER}"
-String BRANCH = "${env.BRANCH_NAME}"
 
-image = 'initial value'
+pipeline {
+    agent any
 
-def tryStep(String message, Closure block, Closure tearDown = null) {
-    try {
-        block();
-    }
-    catch (Throwable t) {
-        if (BRANCH == "${PRODUCTION_BRANCH}") {
-            slackSend message: "${env.JOB_NAME}: ${message} failure ${env.BUILD_URL}", channel: '#ci-channel', color: 'danger'
-        }
-        throw t;
-    }
-    finally {
-        if (tearDown) {
-            tearDown();
-        }
-    }
-}
-
-node {
-    // Get a copy of the code
-    stage("Checkout") {
-        checkout scm
+    environment {
+        SHORT_UUID = sh( script: "uuidgen | cut -d '-' -f1", returnStdout: true).trim()
+        COMPOSE_PROJECT_NAME = "${PROJECT_NAME}-${env.SHORT_UUID}"
+        VERSION = env.BRANCH_NAME.replace('/', '-').toLowerCase().replace(
+            'master', 'latest'
+        )
     }
 
-    stage('Test') {
-        tryStep "Test", {
-            sh "deploy/test/jenkins-script.sh"
-        }
-    }
-
-    // Build the Dockerfile in the $CONTAINER_DIR and push it to Nexus
-    stage("Build develop image") {
-        tryStep "build", {
-            image = docker.build("${IMAGE_NAME}","${CONTAINER_DIR}")
-            image.push()
-        }
-    }
-}
-
-// Acceptance branch, fetch the container, label with acceptance and deploy to acceptance.
-if (BRANCH == "${ACCEPTANCE_BRANCH}") {
-    node {
-        stage("Deploy to ACC") {
-            tryStep "deployment", {
-                image.push("acceptance")
-                build job: 'Subtask_Openstack_Playbook',
-                        parameters: [
-                                [$class: 'StringParameterValue', name: 'INFRASTRUCTURE', value: "${INFRASTRUCTURE}"],
-                                [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
-                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: "${PLAYBOOK}"]
-                        ]
+    stages {
+        stage('Test') {
+            steps {
+                sh 'make test'
             }
         }
-  }
-}
 
-// On master branch, fetch the container, tag with production and latest and deploy to production
-if (BRANCH == "${PRODUCTION_BRANCH}") {
-    stage('Waiting for approval') {
-        slackSend channel: '#ci-channel', color: 'warning', message: "${PROJECT_DISPLAY} is waiting for Production Release - please confirm"
-        input "Deploy to Production?"
-    }
-
-    node {
-        stage("Deploy to PROD") {
-            tryStep "deployment", {
-                image.push("production")
-                image.push("latest")
-                build job: 'Subtask_Openstack_Playbook',
-                        parameters: [
-                                [$class: 'StringParameterValue', name: 'INFRASTRUCTURE', value: "${INFRASTRUCTURE}"],
-                                [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production'],
-                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: "${PLAYBOOK}"]
-                        ]
+        stage('Build') {
+            steps {
+                sh 'make build'
             }
+        }
+
+        stage('Push and deploy') {
+            when { 
+                anyOf {
+                    branch 'master'
+                    buildingTag()
+                    branch pattern: "release/.*", comparator: "REGEXP"
+                }
+            }
+            stages {
+                stage('Push') {
+                    steps {
+                        retry(3) {
+                            sh 'make push'
+                        }
+                    }
+                }
+
+                stage('Deploy to acceptance') {
+                    when { branch pattern: "release/.*", comparator: "REGEXP"}
+                    steps {
+                        sh 'echo Deploy acceptance'
+                        build job: 'Subtask_Openstack_Playbook', parameters: [
+                            string(name: 'PLAYBOOK', value: PLAYBOOK),
+                            string(name: 'INVENTORY', value: PLAYBOOK_INVENTORY),
+                            string(
+                                name: 'PLAYBOOKPARAMS', 
+                                value: "-e deployversion=${VERSION}"
+                            )
+                        ], wait: true
+                    }
+                }
+            }
+        }
+
+    }
+    post {
+        always {
+            sh 'make clean'
+        }
+        success {
+            slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
+                [
+                    "color": "#36a64f",
+                    "title": "Build succeeded :rocket:",
+                ]
+            ])
+        }
+        failure {
+            slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
+                [
+                    "color": "#D53030",
+                    "title": "Build failed :fire:",
+                ]
+            ])
         }
     }
 }

@@ -4,20 +4,22 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
+appdirs==1.4.3            # via virtualenv
 asgiref==3.2.3            # via django
 attrs==19.3.0             # via pytest
 certifi==2019.11.28       # via requests, sentry-sdk
 chardet==3.0.4            # via requests
 coverage==5.0.3           # via pytest-cov
 datapunt-django-snapshot==0.1.0
-django-extensions==2.2.6
+distlib==0.3.0            # via virtualenv
+django-extensions==2.2.8
 django==3.0.3
 djangorestframework==3.11.0
 entrypoints==0.3          # via flake8
-filelock==3.0.12          # via tox
+filelock==3.0.12          # via tox, virtualenv
 flake8==3.7.9
 idna==2.8                 # via requests
-importlib-metadata==1.5.0  # via pluggy, pytest, tox
+importlib-metadata==1.5.0  # via pluggy, pytest, tox, virtualenv
 isort==4.3.21
 mccabe==0.6.1             # via flake8
 more-itertools==8.2.0     # via pytest
@@ -33,16 +35,16 @@ pytest-django==3.8.0
 pytest-flake8==1.0.4
 pytest-isort==0.3.1
 pytest==5.3.5
-python-dotenv==0.10.5
+python-dotenv==0.11.0
 pytz==2019.3              # via django
 requests==2.22.0          # via datapunt-django-snapshot
 sentry-sdk==0.14.1
-six==1.14.0               # via django-extensions, packaging, tox
+six==1.14.0               # via django-extensions, packaging, tox, virtualenv
 sqlparse==0.3.0           # via django
 toml==0.10.0              # via tox
 tox==3.14.3
 urllib3==1.25.8           # via requests, sentry-sdk
 uwsgi==2.0.18
-virtualenv==16.7.9        # via tox
+virtualenv==20.0.2        # via tox
 wcwidth==0.1.8            # via pytest
-zipp==2.1.0               # via importlib-metadata
+zipp==2.2.0               # via importlib-metadata
