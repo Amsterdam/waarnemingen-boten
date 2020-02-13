@@ -13,20 +13,18 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 
 import sentry_sdk
-from dotenv import load_dotenv
 from sentry_sdk.integrations.django import DjangoIntegration
 
 # Load .env file to retrieve all environment variables
-load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', "")
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', False)
+DEBUG = os.getenv('DEBUG', False)
 
 ALLOWED_HOSTS = ['*']
 
@@ -42,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ais',
     'health',
-    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +72,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wsgi.application'
 
+if DEBUG:
+    INSTALLED_APPS += [
+        'django_extensions',
+    ]
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -140,3 +141,26 @@ if SENTRY_DSN:
         integrations=[DjangoIntegration()],
         ignore_errors=['ExpiredSignatureError']
     )
+
+
+# Django Logging settings
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console'
+        },
+
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': os.getenv('LOG_LEVEL', 'INFO'),
+    },
+}

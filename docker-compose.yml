@@ -10,11 +10,11 @@ services:
     ports:
       - 5432
     environment:
-      POSTGRES_DB: boten
-      POSTGRES_USER: boten 
-      POSTGRES_PASSWORD: insecure
-      PGDATA: /data
-      POSTGRES_INITDB_WALDIR: /wal
+      - POSTGRES_DB="boten"
+      - POSTGRES_USER="boten"
+      - POSTGRES_PASSWORD="insecure"
+      - PGDATA="/data"
+      - POSTGRES_INITDB_WALDIR="/wal"
     volumes:
       - db_data:/data
       - db_wal:/wal
@@ -27,8 +27,7 @@ services:
     ports:
       - 8000:8000
     environment:
-      DEBUG: "true"
-      SECRET_KEY: "dev"
+      - SECRET_KEY
     volumes:
       - ./src:/src
       - ./deploy:/deploy
@@ -44,9 +43,9 @@ services:
     ports:
       - 8000:8000
     environment:
-      DEBUG: "true"
-      SECRET_KEY: "dev"
-      PYTHONBREAKPOINT:
+      - DEBUG="true"
+      - SECRET_KEY="dev"
+      - PYTHONBREAKPOINT
     volumes:
       - ./src:/src
       - ./deploy:/deploy
@@ -64,9 +63,10 @@ services:
       - ./tests:/tests
       - ./deploy:/deploy
     environment:
-      SECRET_KEY: "tests"
-      DJANGO_SETTINGS_MODULE: "config.settings"
-      PYTEST_ADDOPTS:
+      - SECRET_KEY="tests"
+      - DJANGO_SETTINGS_MODULE="config.settings"
+      - LOG_LEVEL="ERROR"
+      - PYTEST_ADDOPTS
     depends_on:
       - database
     entrypoint: /deploy/wait-for-it.sh database:5432 --
@@ -78,8 +78,8 @@ services:
     ports:
       - 8000:8000
     environment:
-      DEBUG: "true"
-      SECRET_KEY: "dev"
+      - DEBUG="true"
+      - SECRET_KEY="dev"
     volumes:
       - ./src:/src
       - ./deploy:/deploy
@@ -95,10 +95,10 @@ services:
     ports:
       - 8000:8000
     environment:
-      DEBUG: "true"
-      SECRET_KEY: "dev"
-      WATERNET_USERNAME:
-      WATERNET_PASSWORD:
+      - DEBUG="true"
+      - SECRET_KEY="dev"
+      - WATERNET_USERNAME
+      - WATERNET_PASSWORD
     volumes:
       - ./src:/src
       - ./deploy:/deploy
