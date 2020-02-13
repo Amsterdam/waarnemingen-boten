@@ -4,7 +4,7 @@ from django.core.management import call_command
 from django.test import TestCase, override_settings
 
 from ais.models import WaternetSnapshot
-from ais.scraper import InvalidCredentials, MissingEnvVariables
+from ais.scraper import EmptyResponse, InvalidCredentials, MissingEnvVariables
 
 
 @override_settings(WATERNET_PASSWORD='test', WATERNET_USERNAME='test')
@@ -23,8 +23,16 @@ class TestWaternetScraper(TestCase):
             call_command('scrape_waternet')
         self.assertEqual(WaternetSnapshot.objects.count(), 0)
 
+    def test_empty_response_fail(self, requests):
+        requests.post().status_code = 200
+        requests.get().json.side_effect = [[]]  # empty list response
+
+        with self.assertRaises(EmptyResponse):
+            call_command('scrape_waternet')
+        self.assertEqual(WaternetSnapshot.objects.count(), 0)
+
     def test_ok(self, requests):
         requests.post().status_code = 200
-        requests.get().json.side_effect = 'test'
+        requests.get().json.side_effect = ['test']
         call_command('scrape_waternet')
         self.assertEqual(WaternetSnapshot.objects.count(), 1)

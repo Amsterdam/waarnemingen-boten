@@ -1,34 +1,108 @@
-version: '3.3'
+version: '3.5'
+
+volumes:
+  db_data:
+  db_wal:
+
 services:
   database:
-    image: amsterdam/postgres11
+    image: timescale/timescaledb-postgis:1.4.2-pg11
     ports:
-      - "5432:5432"
+      - 5432
     environment:
       POSTGRES_DB: boten
       POSTGRES_USER: boten 
       POSTGRES_PASSWORD: insecure
+      PGDATA: /data
+      POSTGRES_INITDB_WALDIR: /wal
     volumes:
-      - ~/.ssh/datapunt.key:/root/.ssh/datapunt.key
-      - ./backups:/tmp/backups
+      - db_data:/data
+      - db_wal:/wal
 
-  api:
-    build: .
+  app:
+    build:
+      context: .
+      target: app
+    image: repo.data.amsterdam.nl/datapunt/waarnemingen-boten:${VERSION:-latest}
     ports:
-      - "8001:8000"
-    links:
-      - database
+      - 8000:8000
     environment:
-      SECRET_KEY: "insecure"
-      DJANGO_DEBUG: "True"
-      UWSGI_CALLABLE: "application"
-      UWSGI_DIE_ON_TERM: "1"
-      UWSGI_HARAKIRI: "15"
-      UWSGI_HTTP: "0.0.0.0:8000"
-      UWSGI_MASTER: "1"
-      UWSGI_MODULE: "wsgi:application"
-      UWSGI_OFFLOAD_THREADS: "1"
-      UWSGI_STATIC_EXPIRES: "/* 3600"
-      UWSGI_STATIC_INDEX: "index.html"
-      UWSGI_STATIC_MAP: "/waarnemingen/boten/static=/static"
-      UWSGI_VACUUM: "1"
+      DEBUG: "true"
+      SECRET_KEY: "dev"
+    volumes:
+      - ./src:/src
+      - ./deploy:/deploy
+    depends_on:
+      - database
+    entrypoint: /deploy/wait-for-it.sh database:5432 --
+    command: python manage.py runserver 0.0.0.0:8000
+
+  dev:
+    build:
+      context: .
+      target: dev
+    ports:
+      - 8000:8000
+    environment:
+      DEBUG: "true"
+      SECRET_KEY: "dev"
+      PYTHONBREAKPOINT:
+    volumes:
+      - ./src:/src
+      - ./deploy:/deploy
+    depends_on:
+      - database
+    entrypoint: /deploy/wait-for-it.sh database:5432 --
+    command: python manage.py runserver 0.0.0.0:8000
+
+  test:
+    build:
+      context: .
+      target: tests
+    volumes:
+      - ./src:/src
+      - ./tests:/tests
+      - ./deploy:/deploy
+    environment:
+      SECRET_KEY: "tests"
+      DJANGO_SETTINGS_MODULE: "config.settings"
+      PYTEST_ADDOPTS:
+    depends_on:
+      - database
+    entrypoint: /deploy/wait-for-it.sh database:5432 --
+
+  import_waternet:
+    build:
+      context: .
+      target: dev
+    ports:
+      - 8000:8000
+    environment:
+      DEBUG: "true"
+      SECRET_KEY: "dev"
+    volumes:
+      - ./src:/src
+      - ./deploy:/deploy
+    depends_on:
+      - database
+    entrypoint: /deploy/wait-for-it.sh database:5432 --
+    command: python manage.py import_waternet
+
+  scrape_waternet:
+    build:
+      context: .
+      target: dev
+    ports:
+      - 8000:8000
+    environment:
+      DEBUG: "true"
+      SECRET_KEY: "dev"
+      WATERNET_USERNAME:
+      WATERNET_PASSWORD:
+    volumes:
+      - ./src:/src
+      - ./deploy:/deploy
+    depends_on:
+      - database
+    entrypoint: /deploy/wait-for-it.sh database:5432 --
+    command: python manage.py scrape_waternet

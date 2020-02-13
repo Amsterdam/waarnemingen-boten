@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+import sentry_sdk
 from dotenv import load_dotenv
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Load .env file to retrieve all environment variables
 load_dotenv()
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ais',
     'health',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +131,12 @@ STATIC_ROOT = '/static/'
 
 WATERNET_USERNAME = os.getenv('WATERNET_USERNAME')
 WATERNET_PASSWORD = os.getenv('WATERNET_PASSWORD')
+
+SENTRY_DSN = os.getenv('SENTRY_DSN')
+
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        ignore_errors=['ExpiredSignatureError']
+    )
