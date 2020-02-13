@@ -4,7 +4,6 @@
 django
 djangorestframework
 psycopg2-binary
-python-dotenv 
 datapunt-django-snapshot
 uWSGI
 sentry-sdk
