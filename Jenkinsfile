@@ -78,6 +78,7 @@ pipeline {
             sh 'make clean'
         }
         success {
+            when { branch pattern: "release/.*", comparator: "REGEXP"}
             slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
                 [
                     "color": "#36a64f",
@@ -86,6 +87,7 @@ pipeline {
             ])
         }
         failure {
+            when { branch pattern: "release/.*", comparator: "REGEXP"}
             slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
                 [
                     "color": "#D53030",
