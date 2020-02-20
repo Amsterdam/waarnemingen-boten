@@ -9,7 +9,7 @@ ADD deploy /deploy
 WORKDIR /src
 ADD src .
 
-ARG SECRET_KEY=collectstatic 
+ARG SECRET_KEY=collectstatic
 RUN python manage.py collectstatic --no-input
 
 USER datapunt

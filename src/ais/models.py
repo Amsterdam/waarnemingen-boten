@@ -1,8 +1,11 @@
+from django.utils import timezone
 from django.contrib.gis.db import models
 from snapshot.models import BaseSnapshot
 
 from ais.constants import WGS84_SRID
 from ais.managers import WaternetSnapshotManager
+
+from contrib.timescale.fields import TimescaleDateTimeField
 
 
 class WaternetSnapshot(BaseSnapshot):
@@ -22,8 +25,7 @@ class Waternet(models.Model):
     sensor = models.CharField(max_length=255)
     lastupdate = models.DateTimeField()
     lastmoved = models.DateTimeField(null=True, blank=True)
-
-    scraped_at = models.DateTimeField()
+    scraped_at = TimescaleDateTimeField(interval='1 day', default=timezone.now)
 
     class Meta:
         ordering = ('scraped_at',)
