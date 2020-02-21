@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ais',
     'health',
+    'contrib.timescale',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,7 @@ if DEBUG:
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'ENGINE': 'contrib.timescale.db.backend',
         'NAME': os.getenv('DATABASE_NAME', 'boten'),
         'USER': os.getenv('DATABASE_USER', 'boten'),
         'PASSWORD': os.getenv('DATABASE_PASSWORD', 'insecure'),
