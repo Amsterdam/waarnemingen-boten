@@ -19,7 +19,7 @@ pipeline {
 
     environment {
         SHORT_UUID = sh( script: "uuidgen | cut -d '-' -f1", returnStdout: true).trim()
-        RELEASE_PATTERN = "release/.*"
+        def IS_RELEASE = "${env.BRANCH_NAME ==~ "release/.*"}"
         COMPOSE_PROJECT_NAME = "${PROJECT_NAME}-${env.SHORT_UUID}"
         VERSION = env.BRANCH_NAME.replace('/', '-').toLowerCase().replace(
             'master', 'latest'
@@ -44,7 +44,7 @@ pipeline {
                 anyOf {
                     branch 'master'
                     buildingTag()
-                    branch pattern: env.RELEASE_PATTERN, comparator: "REGEXP"
+                    environment name: 'IS_RELEASE', value: 'true'
                 }
             }
             stages {
@@ -57,7 +57,7 @@ pipeline {
                 }
 
                 stage('Deploy to acceptance') {
-                    when { branch pattern: env.RELEASE_PATTERN, comparator: "REGEXP"}
+                    when { environment name: 'IS_RELEASE', value: 'true' }
                     steps {
                         sh 'echo Deploy acceptance'
                         build job: 'Subtask_Openstack_Playbook', parameters: [
@@ -80,7 +80,7 @@ pipeline {
         }
         success {
             script {
-                if (env.BRANCH_NAME =~ env.RELEASE_PATTERN)
+                if ( env.IS_RELEASE == true )
                 slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
                     [
                         "color": "#36a64f",
@@ -91,7 +91,7 @@ pipeline {
         }
         failure {
             script {
-                if (env.BRANCH_NAME =~ env.RELEASE_PATTERN)
+                if ( env.IS_RELEASE == true )
                 slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
                     [
                         "color": "#D53030",
