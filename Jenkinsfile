@@ -19,6 +19,7 @@ pipeline {
 
     environment {
         SHORT_UUID = sh( script: "uuidgen | cut -d '-' -f1", returnStdout: true).trim()
+        RELEASE_PATTERN = "release/.*"
         COMPOSE_PROJECT_NAME = "${PROJECT_NAME}-${env.SHORT_UUID}"
         VERSION = env.BRANCH_NAME.replace('/', '-').toLowerCase().replace(
             'master', 'latest'
@@ -43,7 +44,7 @@ pipeline {
                 anyOf {
                     branch 'master'
                     buildingTag()
-                    branch pattern: "release/.*", comparator: "REGEXP"
+                    branch pattern: env.RELEASE_PATTERN, comparator: "REGEXP"
                 }
             }
             stages {
@@ -56,7 +57,7 @@ pipeline {
                 }
 
                 stage('Deploy to acceptance') {
-                    when { branch pattern: "release/.*", comparator: "REGEXP"}
+                    when { branch pattern: env.RELEASE_PATTERN, comparator: "REGEXP"}
                     steps {
                         sh 'echo Deploy acceptance'
                         build job: 'Subtask_Openstack_Playbook', parameters: [
@@ -78,20 +79,26 @@ pipeline {
             sh 'make clean'
         }
         success {
-            slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
-                [
-                    "color": "#36a64f",
-                    "title": "Build succeeded :rocket:",
-                ]
-            ])
+            script {
+                if (env.BRANCH_NAME =~ env.RELEASE_PATTERN)
+                slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
+                    [
+                        "color": "#36a64f",
+                        "title": "Build succeeded :rocket:",
+                    ]
+                ])
+            }
         }
         failure {
-            slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
-                [
-                    "color": "#D53030",
-                    "title": "Build failed :fire:",
-                ]
-            ])
+            script {
+                if (env.BRANCH_NAME =~ env.RELEASE_PATTERN)
+                slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
+                    [
+                        "color": "#D53030",
+                        "title": "Build failed :fire:",
+                    ]
+                ])
+            }
         }
     }
 }
