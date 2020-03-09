@@ -9,30 +9,30 @@ attrs==19.3.0             # via pytest
 backcall==0.1.0           # via ipython
 click==7.0                # via pip-tools
 coverage==5.0.3           # via pytest-cov
-decorator==4.4.1          # via ipython, traitlets
+decorator==4.4.2          # via ipython, traitlets
 django-extensions==2.2.8
 entrypoints==0.3          # via flake8
 flake8==3.7.9             # via pytest-flake8
 importlib-metadata==1.5.0  # via pluggy, pytest
-ipdb==0.12.3
+ipdb==0.13.2
 ipython-genutils==0.2.0   # via traitlets
-ipython==7.12.0
+ipython==7.13.0
 isort==4.3.21             # via pytest-isort
 jedi==0.16.0              # via ipython
 mccabe==0.6.1             # via flake8
 more-itertools==8.2.0     # via pytest
-packaging==20.1           # via pytest
-parso==0.6.1              # via jedi
+packaging==20.3           # via pytest
+parso==0.6.2              # via jedi
 pexpect==4.8.0            # via ipython
 pickleshare==0.7.5        # via ipython
-pip-tools==4.4.1
+pip-tools==4.5.1
 pluggy==0.13.1            # via pytest
-prompt-toolkit==3.0.3     # via ipython
+prompt-toolkit==3.0.4     # via ipython
 ptyprocess==0.6.0         # via pexpect
 py==1.8.1                 # via pytest
 pycodestyle==2.5.0        # via flake8
 pyflakes==2.1.1           # via flake8
-pygments==2.5.2           # via ipython
+pygments==2.6.1           # via ipython
 pyparsing==2.4.6          # via packaging
 pytest-cov==2.8.1
 pytest-django==3.8.0
@@ -42,7 +42,7 @@ pytest==5.3.5
 six==1.14.0               # via django-extensions, packaging, pip-tools, traitlets
 traitlets==4.3.3          # via ipython
 wcwidth==0.1.8            # via prompt-toolkit, pytest
-zipp==2.2.0               # via importlib-metadata
+zipp==3.1.0               # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
