@@ -2,7 +2,6 @@
 def PROJECT_NAME = "waarnemingen-boten"
 def SLACK_CHANNEL = '#waarnemingen-deployments'
 def PLAYBOOK = 'deploy-waarnemingen-boten.yml'
-def PLAYBOOK_INVENTORY = 'acceptance'
 def SLACK_MESSAGE = [
     "title_link": BUILD_URL,
     "fields": [
@@ -18,12 +17,12 @@ pipeline {
     agent any
 
     environment {
-        SHORT_UUID = sh( script: "uuidgen | cut -d '-' -f1", returnStdout: true).trim()
-        def IS_RELEASE = "${env.BRANCH_NAME ==~ "release/.*"}"
+        SHORT_UUID = sh( script: "head /dev/urandom | tr -dc A-Za-z0-9 | head -c10", returnStdout: true).trim()
         COMPOSE_PROJECT_NAME = "${PROJECT_NAME}-${env.SHORT_UUID}"
         VERSION = env.BRANCH_NAME.replace('/', '-').toLowerCase().replace(
             'master', 'latest'
         )
+        IS_RELEASE = "${env.BRANCH_NAME ==~ "release/.*"}"
     }
 
     stages {
@@ -51,7 +50,7 @@ pipeline {
                 stage('Push') {
                     steps {
                         retry(3) {
-                            sh 'make push'
+                            sh 'make push_semver'
                         }
                     }
                 }
@@ -59,15 +58,35 @@ pipeline {
                 stage('Deploy to acceptance') {
                     when { environment name: 'IS_RELEASE', value: 'true' }
                     steps {
-                        sh 'echo Deploy acceptance'
                         build job: 'Subtask_Openstack_Playbook', parameters: [
                             string(name: 'PLAYBOOK', value: PLAYBOOK),
-                            string(name: 'INVENTORY', value: PLAYBOOK_INVENTORY),
+                            string(name: 'INVENTORY', value: "acceptance"),
                             string(
                                 name: 'PLAYBOOKPARAMS', 
                                 value: "-e deployversion=${VERSION}"
                             )
                         ], wait: true
+                    }
+                }
+
+                stage('Deploy to production') {
+                    when { buildingTag() }
+                    steps {
+                        build job: 'Subtask_Openstack_Playbook', parameters: [
+                            string(name: 'PLAYBOOK', value: PLAYBOOK),
+                            string(name: 'INVENTORY', value: "production"),
+                            string(
+                                name: 'PLAYBOOKPARAMS', 
+                                value: "-e deployversion=${VERSION}"
+                            )
+                        ], wait: true
+
+                        slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
+                            [
+                                "color": "#36a64f",
+                                "title": "Deploy to production succeeded :rocket:",
+                            ]
+                        ])
                     }
                 }
             }
@@ -78,27 +97,13 @@ pipeline {
         always {
             sh 'make clean'
         }
-        success {
-            script {
-                if ( env.IS_RELEASE == true )
-                slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
-                    [
-                        "color": "#36a64f",
-                        "title": "Build succeeded :rocket:",
-                    ]
-                ])
-            }
-        }
         failure {
-            script {
-                if ( env.IS_RELEASE == true )
-                slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
-                    [
-                        "color": "#D53030",
-                        "title": "Build failed :fire:",
-                    ]
-                ])
-            }
+            slackSend(channel: SLACK_CHANNEL, attachments: [SLACK_MESSAGE << 
+                [
+                    "color": "#D53030",
+                    "title": "Build failed :fire:",
+                ]
+            ])
         }
     }
 }
