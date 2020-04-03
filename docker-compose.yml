@@ -23,7 +23,7 @@ services:
     build:
       context: .
       target: app
-    image: repo.data.amsterdam.nl/datapunt/waarnemingen-boten:${VERSION:-latest}
+    image: docker-registry.data.amsterdam.nl/datapunt/waarnemingen-boten:${VERSION:-latest}
     ports:
       - 8000:8000
     environment:
