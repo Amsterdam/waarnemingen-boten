@@ -33,8 +33,6 @@ services:
       - ./deploy:/deploy
     depends_on:
       - database
-    entrypoint: /deploy/wait-for-it.sh database:5432 --
-    command: python manage.py runserver 0.0.0.0:8000
 
   dev:
     build:

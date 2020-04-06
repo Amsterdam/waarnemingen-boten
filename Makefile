@@ -1,6 +1,8 @@
 # This Makefile is based on the Makefile defined in the Python Best Practices repository:
 # https://git.datapunt.amsterdam.nl/Datapunt/python-best-practices/blob/master/dependency_management/
-.PHONY: app
+#
+# VERSION = 2020.01.29
+.PHONY = help pip-tools install requirements update test init
 dc = docker-compose
 
 help:                               ## Show this help.
@@ -10,7 +12,7 @@ pip-tools:
 	pip install pip-tools
 
 install: pip-tools                  ## Install requirements and sync venv with expected state as defined in requirements.txt
-	pip-sync requirements.txt requirements_dev.txt
+	pip-sync requirements_dev.txt
 
 requirements: pip-tools             ## Upgrade requirements (in requirements.in) to latest versions and compile requirements.txt
 	pip-compile --upgrade --output-file requirements.txt requirements.in
@@ -18,32 +20,34 @@ requirements: pip-tools             ## Upgrade requirements (in requirements.in)
 
 upgrade: requirements install       ## Run 'requirements' and 'install' targets
 
-migrations:
+migrations:                         ## Make migrations
 	$(dc) run --rm app python manage.py makemigrations
 
-migrate:
+migrate:                            ## Migrate
 	$(dc) run --rm app python manage.py migrate
 
-build:
+build:                              ## Build docker image
 	$(dc) build
 
-push:
+push: build                         ## Push docker image to registry
 	$(dc) push
 
-app:
+push_semver:
+	VERSION=$${VERSION} $(MAKE) push
+	VERSION=$${VERSION%\.*} $(MAKE) push
+	VERSION=$${VERSION%%\.*} $(MAKE) push
+
+app:                                ## Run app
 	$(dc) run --service-ports app
 
-dev:
-	$(dc) run --service-ports dev
+bash:                               ## Run the container and start bash
+	$(dc) run --rm app bash
 
-test:
+test:                               ## Execute tests
 	$(dc) run --rm test pytest $(ARGS)
 
-clean:
+clean:                              ## Clean docker stuff
 	$(dc) down -v
 
-bash:
-	$(dc) run --rm dev bash
-
-env:
+env:                                ## Print current env
 	env | sort
