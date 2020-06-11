@@ -8,7 +8,7 @@ asgiref==3.2.7            # via django
 certifi==2020.4.5.1       # via requests, sentry-sdk
 chardet==3.0.4            # via requests
 datapunt-django-snapshot==0.1.0  # via -r requirements.in
-django==3.0.6             # via -r requirements.in, datapunt-django-snapshot, djangorestframework
+django==3.0.7             # via -r requirements.in, datapunt-django-snapshot, djangorestframework
 djangorestframework==3.11.0  # via -r requirements.in
 idna==2.9                 # via requests
 psycopg2-binary==2.8.5    # via -r requirements.in
