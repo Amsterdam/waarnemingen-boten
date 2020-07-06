@@ -4,8 +4,8 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
-asgiref==3.2.7            # via django
-certifi==2020.4.5.1       # via requests, sentry-sdk
+asgiref==3.2.10           # via django
+certifi==2020.6.20        # via requests, sentry-sdk
 chardet==3.0.4            # via requests
 datapunt-django-snapshot==0.1.0  # via -r requirements.in
 django==3.0.7             # via -r requirements.in, datapunt-django-snapshot, djangorestframework
@@ -13,8 +13,8 @@ djangorestframework==3.11.0  # via -r requirements.in
 idna==2.9                 # via requests
 psycopg2-binary==2.8.5    # via -r requirements.in
 pytz==2020.1              # via django
-requests==2.23.0          # via datapunt-django-snapshot
-sentry-sdk==0.14.4        # via -r requirements.in
+requests==2.24.0          # via datapunt-django-snapshot
+sentry-sdk==0.15.1        # via -r requirements.in
 sqlparse==0.3.1           # via django
 urllib3==1.25.9           # via requests, sentry-sdk
-uwsgi==2.0.18             # via -r requirements.in
+uwsgi==2.0.19.1           # via -r requirements.in
