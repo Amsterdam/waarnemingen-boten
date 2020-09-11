@@ -1,7 +1,7 @@
 #!groovy
 def PROJECT_NAME = "waarnemingen-boten"
 def SLACK_CHANNEL = '#waarnemingen-deployments'
-def PLAYBOOK = 'deploy-waarnemingen-boten.yml'
+def PLAYBOOK = 'deploy.yml'
 def SLACK_MESSAGE = [
     "title_link": BUILD_URL,
     "fields": [
@@ -64,7 +64,7 @@ pipeline {
                             string(name: 'INVENTORY', value: "acceptance"),
                             string(
                                 name: 'PLAYBOOKPARAMS', 
-                                value: "-e deployversion=${VERSION}"
+                                value: "-e 'deployversion=${VERSION} cmdb_id=app_waarnemingen-boten'"
                             )
                         ], wait: true
                     }
@@ -79,7 +79,7 @@ pipeline {
                             string(name: 'INVENTORY', value: "production"),
                             string(
                                 name: 'PLAYBOOKPARAMS', 
-                                value: "-e deployversion=${VERSION}"
+                                value: "-e 'deployversion=${VERSION} cmdb_id=app_waarnemingen-boten'"
                             )
                         ], wait: true
 
