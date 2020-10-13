@@ -10,12 +10,12 @@ click==7.1.2              # via pip-tools
 coverage==5.3             # via pytest-cov
 decorator==4.4.2          # via ipython
 django-extensions==3.0.9  # via -r requirements_dev.in
-flake8==3.8.3             # via pytest-flake8
+flake8==3.8.4             # via pytest-flake8
 iniconfig==1.0.1          # via pytest
-ipdb==0.13.3              # via -r requirements_dev.in
+ipdb==0.13.4              # via -r requirements_dev.in
 ipython-genutils==0.2.0   # via traitlets
 ipython==7.18.1           # via -r requirements_dev.in, ipdb
-isort==5.5.3              # via pytest-isort
+isort==5.6.3              # via pytest-isort
 jedi==0.17.2              # via ipython
 mccabe==0.6.1             # via flake8
 packaging==20.4           # via pytest
@@ -35,7 +35,7 @@ pytest-cov==2.10.1        # via -r requirements_dev.in
 pytest-django==3.10.0     # via -r requirements_dev.in
 pytest-flake8==1.0.6      # via -r requirements_dev.in
 pytest-isort==1.2.0       # via -r requirements_dev.in
-pytest==6.1.0             # via -r requirements_dev.in, pytest-cov, pytest-django, pytest-flake8
+pytest==6.1.1             # via -r requirements_dev.in, pytest-cov, pytest-django, pytest-flake8
 six==1.15.0               # via packaging, pip-tools
 toml==0.10.1              # via pytest
 traitlets==5.0.4          # via ipython

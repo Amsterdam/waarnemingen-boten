@@ -8,13 +8,13 @@ asgiref==3.2.10           # via django
 certifi==2020.6.20        # via requests, sentry-sdk
 chardet==3.0.4            # via requests
 datapunt-django-snapshot==0.1.0  # via -r requirements.in
-django==3.1.1             # via -r requirements.in, datapunt-django-snapshot, djangorestframework
-djangorestframework==3.11.1  # via -r requirements.in
+django==3.1.2             # via -r requirements.in, datapunt-django-snapshot, djangorestframework
+djangorestframework==3.12.1  # via -r requirements.in
 idna==2.10                # via requests
 psycopg2-binary==2.8.6    # via -r requirements.in
 pytz==2020.1              # via django
 requests==2.24.0          # via datapunt-django-snapshot
-sentry-sdk==0.17.8        # via -r requirements.in
-sqlparse==0.3.1           # via django
+sentry-sdk==0.18.0        # via -r requirements.in
+sqlparse==0.4.1           # via django
 urllib3==1.25.10          # via requests, sentry-sdk
 uwsgi==2.0.19.1           # via -r requirements.in
