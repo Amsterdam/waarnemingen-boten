@@ -14,7 +14,7 @@ idna==2.10                # via requests
 psycopg2-binary==2.8.6    # via -r requirements.in
 pytz==2020.1              # via django
 requests==2.24.0          # via datapunt-django-snapshot
-sentry-sdk==0.18.0        # via -r requirements.in
+sentry-sdk==0.19.1        # via -r requirements.in
 sqlparse==0.4.1           # via django
-urllib3==1.25.10          # via requests, sentry-sdk
+urllib3==1.25.11          # via requests, sentry-sdk
 uwsgi==2.0.19.1           # via -r requirements.in
