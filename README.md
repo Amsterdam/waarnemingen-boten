@@ -2,6 +2,9 @@
 
 This project is part of the waarnemingen cluster. All data related to boats should be imported and exposed here through an API (API not yet implemented). 
 
+# Project architecture
+This project follows the setup used in multiple projects and is described here: https://github.com/Amsterdam/opdrachten_team_dev.  
+
 # Waternet
 
 Currently Waternet is the only datasource we are retrieving data from. We retrieve AIS (automatic identification system) data from ships around Amsterdam, at a specific bounding box, every x amount of minutes.
