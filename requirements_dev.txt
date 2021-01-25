@@ -24,17 +24,17 @@ pexpect==4.8.0            # via ipython
 pickleshare==0.7.5        # via ipython
 pip-tools==5.5.0          # via -r requirements_dev.in
 pluggy==0.13.1            # via pytest
-prompt-toolkit==3.0.10    # via ipython
+prompt-toolkit==3.0.14    # via ipython
 ptyprocess==0.7.0         # via pexpect
 py==1.10.0                # via pytest
 pycodestyle==2.6.0        # via flake8
 pyflakes==2.2.0           # via flake8
-pygments==2.7.3           # via ipython
+pygments==2.7.4           # via ipython
 pyparsing==2.4.7          # via packaging
-pytest-cov==2.10.1        # via -r requirements_dev.in
+pytest-cov==2.11.1        # via -r requirements_dev.in
 pytest-django==4.1.0      # via -r requirements_dev.in
 pytest-flake8==1.0.7      # via -r requirements_dev.in
-pytest-isort==1.2.0       # via -r requirements_dev.in
+pytest-isort==1.3.0       # via -r requirements_dev.in
 pytest==6.2.1             # via -r requirements_dev.in, pytest-cov, pytest-django, pytest-flake8
 toml==0.10.2              # via pytest
 traitlets==5.0.5          # via ipython
