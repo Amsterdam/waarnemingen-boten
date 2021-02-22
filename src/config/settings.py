@@ -134,11 +134,8 @@ STATIC_ROOT = '/static/'
 WATERNET_USERNAME = os.getenv('WATERNET_USERNAME')
 WATERNET_PASSWORD = os.getenv('WATERNET_PASSWORD')
 
-SENTRY_DSN = os.getenv('SENTRY_DSN')
-
-if SENTRY_DSN:
+if os.getenv('SENTRY_DSN'):
     sentry_sdk.init(
-        dsn=SENTRY_DSN,
         integrations=[DjangoIntegration()],
         ignore_errors=['ExpiredSignatureError']
     )
