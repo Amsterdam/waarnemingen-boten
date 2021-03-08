@@ -10,7 +10,7 @@ backcall==0.2.0
     # via ipython
 click==7.1.2
     # via pip-tools
-coverage==5.4
+coverage==5.5
     # via pytest-cov
 decorator==4.4.2
     # via ipython
@@ -20,11 +20,11 @@ flake8==3.8.4
     # via pytest-flake8
 iniconfig==1.1.1
     # via pytest
-ipdb==0.13.4
+ipdb==0.13.5
     # via -r requirements_dev.in
 ipython-genutils==0.2.0
     # via traitlets
-ipython==7.20.0
+ipython==7.21.0
     # via
     #   -r requirements_dev.in
     #   ipdb
@@ -56,7 +56,7 @@ pycodestyle==2.6.0
     # via flake8
 pyflakes==2.2.0
     # via flake8
-pygments==2.8.0
+pygments==2.8.1
     # via ipython
 pyparsing==2.4.7
     # via packaging
