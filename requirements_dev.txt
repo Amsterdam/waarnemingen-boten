@@ -16,11 +16,11 @@ decorator==4.4.2
     # via ipython
 django-extensions==3.1.1
     # via -r requirements_dev.in
-flake8==3.8.4
+flake8==3.9.0
     # via pytest-flake8
 iniconfig==1.1.1
     # via pytest
-ipdb==0.13.5
+ipdb==0.13.7
     # via -r requirements_dev.in
 ipython-genutils==0.2.0
     # via traitlets
@@ -28,7 +28,7 @@ ipython==7.21.0
     # via
     #   -r requirements_dev.in
     #   ipdb
-isort==5.7.0
+isort==5.8.0
     # via pytest-isort
 jedi==0.18.0
     # via ipython
@@ -38,23 +38,25 @@ packaging==20.9
     # via pytest
 parso==0.8.1
     # via jedi
+pep517==0.10.0
+    # via pip-tools
 pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-pip-tools==5.5.0
+pip-tools==6.0.1
     # via -r requirements_dev.in
 pluggy==0.13.1
     # via pytest
-prompt-toolkit==3.0.16
+prompt-toolkit==3.0.17
     # via ipython
 ptyprocess==0.7.0
     # via pexpect
 py==1.10.0
     # via pytest
-pycodestyle==2.6.0
+pycodestyle==2.7.0
     # via flake8
-pyflakes==2.2.0
+pyflakes==2.3.0
     # via flake8
 pygments==2.8.1
     # via ipython
@@ -75,7 +77,10 @@ pytest==6.2.2
     #   pytest-django
     #   pytest-flake8
 toml==0.10.2
-    # via pytest
+    # via
+    #   ipdb
+    #   pep517
+    #   pytest
 traitlets==5.0.5
     # via ipython
 wcwidth==0.2.5
