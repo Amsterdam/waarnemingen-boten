@@ -14,7 +14,7 @@ chardet==4.0.0
     # via requests
 datapunt-django-snapshot==0.1.0
     # via -r requirements.in
-django==3.2
+django==3.2.3
     # via
     #   -r requirements.in
     #   datapunt-django-snapshot
@@ -29,7 +29,7 @@ pytz==2021.1
     # via django
 requests==2.25.1
     # via datapunt-django-snapshot
-sentry-sdk==1.0.0
+sentry-sdk==1.1.0
     # via -r requirements.in
 sqlparse==0.4.1
     # via django
