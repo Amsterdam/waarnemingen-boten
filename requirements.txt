@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
-asgiref==3.3.4
+asgiref==3.4.0
     # via django
 certifi==2021.5.30
     # via
@@ -14,7 +14,7 @@ chardet==4.0.0
     # via requests
 datapunt-django-snapshot==0.1.0
     # via -r requirements.in
-django==3.2.3
+django==3.2.4
     # via
     #   -r requirements.in
     #   datapunt-django-snapshot
@@ -23,7 +23,7 @@ djangorestframework==3.12.4
     # via -r requirements.in
 idna==2.10
     # via requests
-psycopg2-binary==2.8.6
+psycopg2-binary==2.9.1
     # via -r requirements.in
 pytz==2021.1
     # via django
@@ -33,7 +33,7 @@ sentry-sdk==1.1.0
     # via -r requirements.in
 sqlparse==0.4.1
     # via django
-urllib3==1.26.5
+urllib3==1.26.6
     # via
     #   requests
     #   sentry-sdk
