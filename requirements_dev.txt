@@ -12,8 +12,6 @@ attrs==21.4.0
     # via pytest
 backcall==0.2.0
     # via ipython
-backports.zoneinfo==0.2.1
-    # via django
 black==21.12b0
     # via ipython
 click==8.0.3
@@ -26,7 +24,7 @@ decorator==5.1.1
     # via
     #   ipdb
     #   ipython
-django==4.0.1
+django==3.2.12
     # via django-extensions
 django-extensions==3.1.5
     # via -r requirements_dev.in
@@ -102,6 +100,8 @@ pytest-flake8==1.0.7
     # via -r requirements_dev.in
 pytest-isort==2.0.0
     # via -r requirements_dev.in
+pytz==2021.3
+    # via django
 six==1.16.0
     # via asttokens
 sqlparse==0.4.2

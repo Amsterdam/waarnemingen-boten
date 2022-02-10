@@ -14,7 +14,7 @@ charset-normalizer==2.0.10
     # via requests
 datapunt-django-snapshot==0.1.0
     # via -r requirements.in
-django==3.2.11
+django==3.2.12
     # via
     #   -r requirements.in
     #   datapunt-django-snapshot
