@@ -6,6 +6,7 @@ ipdb
 # Test and lint packages
 pytest
 pytest-django
+flake8<5  # pytest-flake8 compatability problems
 pytest-flake8
 pytest-isort
 pytest-cov
