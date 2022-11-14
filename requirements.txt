@@ -23,9 +23,9 @@ djangorestframework==3.14.0
     # via -r requirements.in
 idna==3.4
     # via requests
-psycopg2-binary==2.9.4
+psycopg2-binary==2.9.5
     # via -r requirements.in
-pytz==2022.5
+pytz==2022.6
     # via
     #   django
     #   djangorestframework
@@ -39,5 +39,5 @@ urllib3==1.26.12
     # via
     #   requests
     #   sentry-sdk
-uwsgi==2.0.20
+uwsgi==2.0.21
     # via -r requirements.in
